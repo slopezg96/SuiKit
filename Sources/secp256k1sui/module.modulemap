@@ -1,0 +1,4 @@
+module secp256k1sui [system] {
+    header "include/secp256k1sui.h"
+    export *
+}

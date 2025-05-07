@@ -23,7 +23,9 @@ let package = Package(
     ],
     targets: [
         .target(
-            name: "secp256k1sui"
+            name: "secp256k1sui",
+            path: "Sources/secp256k1sui",
+            publicHeadersPath: "include"
         ),
         .target(
             name: "SuiKit",
