@@ -188,7 +188,7 @@ public struct SECP256K1PrivateKey: Equatable, PrivateKeyProtocol {
                 let serializedPubkeyPointer = serializedPkRawPointer.assumingMemoryBound(to: UInt8.self)
                 return withUnsafeMutablePointer(to: &keyLength) { (keyPtr: UnsafeMutablePointer<Int>) -> Int32 in
                     withUnsafeMutablePointer(to: &publicKey) { (pubKeyPtr: UnsafeMutablePointer<secp256k1_pubkey>) -> Int32 in
-                        let res = secp256k1_ec_pubkey_serialize(
+                        let res = secp256k1sui_ec_pubkey_serialize(
                             context,
                             serializedPubkeyPointer,
                             keyPtr,

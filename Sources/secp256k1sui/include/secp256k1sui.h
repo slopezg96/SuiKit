@@ -312,7 +312,7 @@ SECP256K1_API SECP256K1_WARN_UNUSED_RESULT int secp256k1_ec_pubkey_parse(
  *          flags:      SECP256K1_EC_COMPRESSED if serialization should be in
  *                      compressed format, otherwise SECP256K1_EC_UNCOMPRESSED.
  */
-SECP256K1_API int secp256k1_ec_pubkey_serialize(
+SECP256K1_API int secp256k1sui_ec_pubkey_serialize(
     const secp256k1_context* ctx,
     unsigned char *output,
     size_t *outputlen,
