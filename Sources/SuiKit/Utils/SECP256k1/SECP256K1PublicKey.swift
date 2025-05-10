@@ -68,7 +68,7 @@ public struct SECP256K1PublicKey: Equatable, PublicKeyProtocol {
     }
 
     public func verify(data: Data, signature: Signature) throws -> Bool {
-        guard let ctx = secp256k1_context_create(UInt32(SECP256K1_CONTEXT_SIGN|SECP256K1_CONTEXT_VERIFY)) else { throw AccountError.invalidContext }
+        guard let ctx = secp256k1sui_context_create(UInt32(SECP256K1_CONTEXT_SIGN|SECP256K1_CONTEXT_VERIFY)) else { throw AccountError.invalidContext }
         let hashedData = data.sha256()
         var signatureEcdsa: secp256k1_ecdsa_signature = secp256k1_ecdsa_signature()
         let serializedSignature = Data(signature.signature[0..<64])
@@ -76,7 +76,7 @@ public struct SECP256K1PublicKey: Equatable, PublicKeyProtocol {
             if let rawPtr = rawSignaturePtr.baseAddress, rawSignaturePtr.count > 0 {
                 let ptr = rawPtr.assumingMemoryBound(to: UInt8.self)
                 return withUnsafeMutablePointer(to: &signatureEcdsa) { (mutablePtrEcdsa: UnsafeMutablePointer<secp256k1_ecdsa_signature>) -> Int32? in
-                    let res = secp256k1_ecdsa_signature_parse_compact(ctx, mutablePtrEcdsa, ptr)
+                    let res = secp256k1sui_ecdsa_signature_parse_compact(ctx, mutablePtrEcdsa, ptr)
                     return res
                 }
             } else {
@@ -88,7 +88,7 @@ public struct SECP256K1PublicKey: Equatable, PublicKeyProtocol {
         let pubKeyResult = self.key.withUnsafeBytes { (rawUnsafePubkeyPtr: UnsafeRawBufferPointer) -> Int32? in
             if let rawPubKey = rawUnsafePubkeyPtr.baseAddress, rawUnsafePubkeyPtr.count > 0 {
                 let pubKeyPtr = rawPubKey.assumingMemoryBound(to: UInt8.self)
-                let res = secp256k1_ec_pubkey_parse(ctx, &pubKeyObject, pubKeyPtr, self.key.count)
+                let res = secp256k1sui_ec_pubkey_parse(ctx, &pubKeyObject, pubKeyPtr, self.key.count)
                 return res
             } else {
                 return nil
@@ -100,7 +100,7 @@ public struct SECP256K1PublicKey: Equatable, PublicKeyProtocol {
                 if let dataRawPtr = rawUnsafeDataPtr.baseAddress, rawUnsafeDataPtr.count > 0 {
                     let dataPtr = dataRawPtr.assumingMemoryBound(to: UInt8.self)
                     return withUnsafePointer(to: pubKeyObject) { (pubKeyPtr: UnsafePointer<secp256k1_pubkey>) -> Bool in
-                        return secp256k1sui.secp256k1_ecdsa_verify(ctx, signaturePtr, dataPtr, pubKeyPtr) != 0
+                        return secp256k1sui.secp256k1sui_ecdsa_verify(ctx, signaturePtr, dataPtr, pubKeyPtr) != 0
                     }
                 } else {
                     return false
